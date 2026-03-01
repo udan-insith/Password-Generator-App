@@ -11,6 +11,7 @@ const copyButton = document.getElementById("copy-btn");
 const strengthBar = document.querySelector(".strength-bar");
 const strengthText = document.querySelector(".strength-container p");
 const strengthLabel = document.getElementById("strength-label");
+const errorMsg = document.querySelector(".error")
 
 // Character sets
 const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -32,7 +33,11 @@ function makePassword() {
     const includeSymbols = symbolsCheckbox.checked
 
     if(!includeUppercase && !includeLowercase && !includeNumbers &&!includeSymbols) {
-        alert("Please select at least one char type.")
+        errorMsg.style.display = "block"
+        errorMsg.innerHTML = "You should select at leaset one of requirments below"
+        setTimeout(() => {
+            errorMsg.style.display = "none"
+        }, 1500)
         return
     }
     const newPassword = createRandomPassword(length, includeUppercase, includeLowercase, includeNumbers, includeSymbols)
@@ -121,7 +126,7 @@ function createRandomPassword(length, includeUppercase, includeLowercase, includ
     return password
 }
 
-window.addEventListener("DOMLoaded", makePassword)
+window.addEventListener("DOMContentLoaded", makePassword)
 
 copyButton.addEventListener("click", function () {
     if(!passwordInput.value)  reutrn
