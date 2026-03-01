@@ -3,6 +3,10 @@
 /* ROOT */
 :root {
     --primary-color: #2b5876;
+    --secondary-color: #4e4376;
+    --weak-color: #fc8181;
+    --medium-color: #fbd38d;
+    --strong-color: #68d391;
 }
 
 /* RESET */
@@ -15,10 +19,42 @@
 
 /* BODY STYLING */
 body {
+    background: linear-gradient(45deg, var(--primary-color),var(--secondary-color));
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #333;
     padding: 20px;
+}
+
+/* CONTAINER */
+.container {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 450px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.8rem;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color),var(--secondary-color));
 }
