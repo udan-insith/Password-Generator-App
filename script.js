@@ -46,7 +46,7 @@ function updateStrengthMeter(password) {
     const hasUppercase = /[A-Z]/.test(password) // Regular Expression
     const hasLowercase = /[a-z]/.test(password)
     const hasNumbers = /[0-9]/.test(password)
-    const hasSymbols = /!@#$%^&*()-_=+[]{}|;:,.<>?/.test(password)
+    const hasSymbols = /[!@#$%^&*()-_=+[\]{}|;:,.<>?]/.test(password)
 
     let strengthScore = 0
 
@@ -119,4 +119,27 @@ function createRandomPassword(length, includeUppercase, includeLowercase, includ
     }
 
     return password
+}
+
+window.addEventListener("DOMLoaded", makePassword)
+
+copyButton.addEventListener("click", function () {
+    if(!passwordInput.value)  reutrn
+
+    navigator.clipboard
+        .writeText(passwordInput.value)
+        .then(() => showCopySuccess())
+        .catch((error) => console.log("Could not copy!", error))
+})
+
+function showCopySuccess() {
+    copyButton.classList.remove("far", "fa-copy")
+    copyButton.classList.add("fas", "fa-check")
+    copyButton.style.color = "#48bb78"
+
+    setTimeout(() => {
+        copyButton.classList.remove("fas","fa-check")
+        copyButton.classList.add("far","fa-copy")
+        copyButton.style.color = ""
+    }, 1500)
 }
