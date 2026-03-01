@@ -21,3 +21,102 @@ const symbolCharacters = "!@#$%^&*()-_=+[]{}|;:,.<>?/";
 lengthSlider.addEventListener("input", function() {
     lengthDisplay.textContent = lengthSlider.value
 })
+
+generateButton.addEventListener("click", makePassword)
+
+function makePassword() {
+    const length = Number(lengthSlider.value)
+    const includeUppercase = uppercaseCheckbox.checked
+    const includeLowercase = lowercaseCheckbox.checked
+    const includeNumbers = numbersCheckbox.checked
+    const includeSymbols = symbolsCheckbox.checked
+
+    if(!includeUppercase && !includeLowercase && !includeNumbers &&!includeSymbols) {
+        alert("Please select at least one char type.")
+        return
+    }
+    const newPassword = createRandomPassword(length, includeUppercase, includeLowercase, includeNumbers, includeSymbols)
+
+    passwordInput.value = newPassword
+    updateStrengthMeter(newPassword)
+}
+
+function updateStrengthMeter(password) {
+    const passwordLength = password.length
+    const hasUppercase = /[A-Z]/.test(password) // Regular Expression
+    const hasLowercase = /[a-z]/.test(password)
+    const hasNumbers = /[0-9]/.test(password)
+    const hasSymbols = /!@#$%^&*()-_=+[]{}|;:,.<>?/.test(password)
+
+    let strengthScore = 0
+
+    strengthScore += Math.min(passwordLength * 2, 40)
+
+    if (hasUppercase) {
+        strengthScore += 15
+    }
+    if (hasLowercase) {
+        strengthScore += 15
+    }
+    if (hasNumbers) {
+        strengthScore += 15
+    }
+    if (hasSymbols) {
+        strengthScore += 15
+    }
+
+    //enforce min score for every password
+    if (passwordLength < 8) {
+        strengthScore = Math.min(strengthScore, 40)
+    }
+
+    // ensure the width of strength bar valid percentage
+    const safeScore = Math.max(5, Math.min(100, strengthScore))
+    strengthBar.style.width = safeScore + "%"
+
+    let strengthLabelText = ""
+    let barColor = ""
+
+    if (strengthScore < 40) {
+        // weak password
+        barColor = "#fc8181"
+        strengthLabelText = "Weak"
+    } else if (strengthScore < 70) {
+        // medium password
+        barColor = "#fbd38d"
+        strengthLabelText = "Medium"
+    } else {
+        // strong password
+        barColor = "#68d391"
+        strengthLabelText = "Strong"
+    }
+
+    strengthBar.style.backgroundColor = barColor
+    strengthLabel.textContent = strengthLabelText
+}
+
+function createRandomPassword(length, includeUppercase, includeLowercase, includeNumbers, includeSymbols) {
+    let allCharacters = ""
+
+    if (includeUppercase) {
+        allCharacters += uppercaseLetters
+    }
+    if (includeLowercase) {
+        allCharacters += lowercaseLetters
+    }
+    if (includeNumbers) {
+        allCharacters += numberCharacters
+    }
+    if (includeSymbols) {
+        allCharacters += symbolCharacters
+    }
+
+    let password = ""
+
+    for (let i =0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * allCharacters.length)
+        password += allCharacters[randomIndex]
+    }
+
+    return password
+}
